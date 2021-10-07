@@ -14,7 +14,7 @@ export class BuscarMutanteService {
 
     constructor(@mongoose.InjectModel(ChallengeSchema.Challenge.name)
     private readonly challengeModelSchema: Model<ChallengeSchema.Challenge>,
-    @InjectConnection() private connection: Connection) {  
+        @InjectConnection() private connection: Connection) {
     }
 
     // Buscar la cadena en el array que entra a nivel de filas
@@ -188,14 +188,44 @@ export class BuscarMutanteService {
     }
 
     //buscar en los archivos de mongo
-    buscarEstadistica() {
+    async buscarEstadistica() {
+     
+        let contarMutante = 0;
+        let contarHumano = 0;
 
-        let estadistica = this.challengeModelSchema.find({resultado:true});
+        let estadistica = await this.challengeModelSchema.find({}, { projection: { _id: 0 } });
 
-        console.log(estadistica)
+        estadistica.map((registro) => {
 
-        return estadistica;
+            if (registro.resultado === true) {
+                contarMutante += 1
+            }
+            else
+            {
+                contarHumano += 1
+            }
+        })
 
+        const contar = {
+        count_mutant_dna: contarMutante,
+        count_human_dna: contarHumano,
+        ratio: this.calculateRatio(contarHumano, contarMutante)
+        }
+
+        return contar;
+
+    }
+
+    calculateRatio(contadorHumano, contadorMutante){
+
+        for(let num = contadorMutante; num>1; num--) {
+            
+            if((contadorHumano % num) == 0 && (contadorMutante % num) == 0) {
+                contadorHumano=contadorHumano/num;
+                contadorMutante=contadorMutante/num;
+            }
+        }
+        return contadorHumano+":"+contadorMutante;
     }
 
 }

@@ -19,17 +19,17 @@ export class AppController {
     let respuesta = this.buscarMutanteService.buscarMutante(req.body.dna)
     
     response.sendStatus(respuesta?200:403)
-
-    
   }
 
   @Get('/stats')
-  stats(@Request() req, @Response() response : express.Response) {
+  async stats(@Request() req, @Response() response : express.Response) {
 
-    let respuesta = this.buscarMutanteService.buscarEstadistica();
-    
-    response.send(JSON.stringify(respuesta));
+    let respuesta = await this.buscarMutanteService.buscarEstadistica();
 
-    
+    console.log(respuesta)
+
+     response.send(respuesta);
+
+     
   }
 }
