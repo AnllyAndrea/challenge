@@ -13,12 +13,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Post('/mutant')
+  @Post('/mutants')
   mutant(@Request() req, @Response() response : express.Response) {
 
     let respuesta = this.buscarMutanteService.buscarMutante(req.body.dna)
     
-    response.sendStatus(respuesta?200:403)
+    response.sendStatus(respuesta?201:403)
   }
 
   @Get('/stats')
