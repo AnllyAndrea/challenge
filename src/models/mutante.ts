@@ -1,21 +1,4 @@
-import { Injectable } from '@nestjs/common';
-import { MongooseModule } from '@nestjs/mongoose';
-import * as ChallengeSchema from '../models/challenge.schema'
-import * as mongoose from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
-import { ObjectUnsubscribedError } from 'rxjs';
-import { InjectConnection } from '@nestjs/mongoose';
-import { Connection } from 'mongoose';
-
-
-@Injectable()
-export class BuscarMutanteService {
-
-    constructor(@mongoose.InjectModel(ChallengeSchema.Challenge.name)
-    private readonly challengeModelSchema: Model<ChallengeSchema.Challenge>,
-        @InjectConnection() private connection: Connection) {
-    }
+export class Mutante {
 
     // Buscar la cadena en el array que entra a nivel de filas
     buscarFila(adn: string[]): boolean {

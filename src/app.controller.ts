@@ -6,7 +6,8 @@ import * as express from 'express';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService, private readonly buscarMutanteService: BuscarMutanteService) { }
+  constructor(private readonly appService: AppService, 
+    private readonly buscarMutanteService: BuscarMutanteService) { }
 
   @Get()
   getHello(): string {
@@ -18,7 +19,7 @@ export class AppController {
 
     let respuesta = this.buscarMutanteService.buscarMutante(req.body.dna)
     
-    response.sendStatus(respuesta?201:403)
+    response.sendStatus(respuesta?200:403)
   }
 
   @Get('/stats')
