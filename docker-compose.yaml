@@ -1,0 +1,21 @@
+version: '3.7'
+
+services:
+  mongo:
+    container_name: mongo
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=example
+    restart: unless-stopped
+
+  challenge:
+    container_name: challenge
+    build: .
+    ports:
+     - 3000:3000
+    environment:
+     - MONGO_URI=mongodb://root:example@mongo:27017/
+    links:
+      - mongo:mongo
+    restart: unless-stopped

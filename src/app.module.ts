@@ -6,7 +6,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 
 @Module({
   imports:
-    [MongooseModule.forRoot('mongodb+srv://magneto:1234@cluster0.5coc1.mongodb.net/mutants?retryWrites=true&w=majority'),
+    [MongooseModule.forRoot(process.env.MONGO_URI),
       BuscarMutanteModule],
   controllers: [AppController],
   providers: [AppService],

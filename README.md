@@ -1,73 +1,78 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo_text.svg" width="320" alt="Nest Logo" /></a>
-</p>
+# Backend Challenge
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A continuación se describe el paso a paso para la ejecucuón del proyeto.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+El proyecto se encuentra alojado en Google Cloud Run.
 
-## Description
+Instalación y configuración
+------------
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+Instalar dependencias:
 
-## Installation
-
-```bash
-$ npm install
+```
+npm install 
 ```
 
-## Running the app
+### Variables de entorno
 
-```bash
-# development
-$ npm run start
+Se deben configurar la siguiente variable de entorno para la conexión a la base de datos
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+> Se debe usar MongoDb.
+```
+export MONGO_URI=mongodb+srv://user:<password>@cluster0.5coc1.mongodb.net/mutants?retryWrites=true&w=majority
 ```
 
-## Test
+Alternativa para correrlo solo con docker:
 
-```bash
-# unit tests
-$ npm run test
+Instalar Docker y Docker Compose
+------------
 
-# e2e tests
-$ npm run test:e2e
+Ejecutar docker-compose
 
-# test coverage
-$ npm run test:cov
+```
+docker-compose up
 ```
 
-## Support
+### Correr tests y levantar el servidor
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Se pueden ejecutar los tests y levantar el api con los siguientes comandos:
 
-## Stay in touch
+Comando para levantar el servidor manualmente:
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+```
+npm run start
+```
 
-## License
+Correr el test:
+```
+npm run test
+```
 
-Nest is [MIT licensed](LICENSE).
+### Endpoints cuando se levanta el ambiente localmente
+
+Para acceder a la consulta de mutantes se tiene el endpoint **http://localhost:3000/mutants/** y para obtener los datos de estadistiscas se tiene el endpoint **http://localhost:3000/stats**.
+
+
+### Endpoints de ambiente en pdn
+
+Para acceder a la consulta de mutantes se tiene el endpoint **https://challenge-2wva2jw3mq-uc.a.run.app/mutants/** y para obtener los datos de estadistiscas se tiene el endpoint **https://challenge-2wva2jw3mq-uc.a.run.app/stats**.
+
+
+Ejemplos de como interactuar con el API:
+
+```
+curl --location --request POST 'https://challenge-2wva2jw3mq-uc.a.run.app/mutants' \
+--header 'Content-Type: application/json' \
+--data-raw '{"dna":["ATCCTA","CAGTGC","TTATGT","AGATGG","CCAATA","TCGCTG"] }'
+```
+
+```
+curl --location --request GET 'https://challenge-2wva2jw3mq-uc.a.run.app/stats'
+
+Respuesta:
+{
+    "count_mutant_dna": 7,
+    "count_human_dna": 1,
+    "ratio": "1:7"
+}
+```
